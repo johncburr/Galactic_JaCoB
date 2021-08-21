@@ -21,9 +21,7 @@ class ShipClass:
                  ):
         self.name = name
         self.hull_max = hull
-        self.acceleration = acceleration
         self.jump_range = jump_range
-        self.crew_max = crew_min * 3
         self.crew_min = crew_min
         self.cargo_max = cargo
         self.passenger_max = passengers
@@ -54,10 +52,54 @@ class Ship:
         self.name = name
         self.Owner = Owner
         self.Location = Location
+        self.crew_max = DesignClass.crew_min * 3
         self.crew_current = DesignClass.crew_min * 2
+        self.crew_min = DesignClass.crew_min
+        self.cargo_max = DesignClass.cargo_max
         self.cargo_current = 0
+        self.passenger_max = DesignClass.passenger_max
         self.passengers_current = 0
-        self.weapons.extend(DesignClass.weapons[])
+        self.weapons.extend(DesignClass.weapons)
         self.Destination = Location
-        self.Hull = DesignClass.hull_max
+        self.hull_current = DesignClass.hull_max
+        self.hull_max = DesignClass.hull_max
         self.jump_range = DesignClass.jump_range
+        self.target = self
+
+    def set_course(self
+                   ,Destination
+                   ):
+        self.Destination = Destination
+
+    def make_jump(self
+                  ,distance
+                  ):
+        self.Location = Hyperspace[distance]
+
+    def arrive(self):
+        self.Location = self.Destination
+        self.Location.add_ship(self)
+
+    def set_target(self):
+        """randomly set a target that is not owned by my owner and is
+            located where I am."""
+
+    def fight(self):
+        for Weapon in self.weapons:
+            Weapon.fire(self.Target)
+
+
+    def take_damage(self
+                    ,amount
+                    ):
+        self.hull_current -= amount
+        if self.hull_current <= 0:
+            # I need to figure out how to cause an object to delete itself.
+
+    def repair(self
+               ,amount
+               ):
+        self.hull_current += amount
+        if self.hull_current > self.hull_max:
+            self.hull_current = self.hull_max
+
