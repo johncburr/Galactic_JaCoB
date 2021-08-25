@@ -32,12 +32,6 @@ class ShipClass:
                    ):
         self.weapons.append(Weapon)
 
-    def remove_weapon(self
-                      ,weapon
-                      ):
-        """If I have to use this method, then I oopsed somewhere."""
-        self.weapons.remove(Weapon)
-
 
 class Ship:
     """Every ship will be one of these."""
@@ -64,7 +58,8 @@ class Ship:
         self.hull_current = DesignClass.hull_max
         self.hull_max = DesignClass.hull_max
         self.jump_range = DesignClass.jump_range
-        self.target = self
+        self.target = None
+        self.transit = 0
 
     def set_course(self
                    ,Destination
@@ -74,15 +69,18 @@ class Ship:
     def make_jump(self
                   ,distance
                   ):
-        self.Location = Hyperspace[distance]
+        self.Location = Hyperspace
+        self.transit = distance
+        Hyperspace.ships.append(self)
 
     def arrive(self):
         self.Location = self.Destination
         self.Location.add_ship(self)
+        Hyperspace.ships.remove(self)
+        self.transit = 0
 
     def set_target(self):
-        """randomly set a target that is not owned by my owner and is
-            located where I am."""
+        targ = random.choice()
 
     def fight(self):
         for Weapon in self.weapons:
@@ -94,7 +92,8 @@ class Ship:
                     ):
         self.hull_current -= amount
         if self.hull_current <= 0:
-            # I need to figure out how to cause an object to delete itself.
+            self.Owner.ships.remove(self)
+            self.Location.ships.remove(self)
 
     def repair(self
                ,amount
