@@ -26,7 +26,21 @@ class ShipClass:
         self.cargo_max = cargo
         self.passenger_max = passengers
         self.weapons = []
- 
+
+    def __str__(self):
+        out = self.name + ':'
+        out += ' Hull:' + repr(self.hull)
+        out += ' Accl:' + repr(self.acceleration)
+        out += ' Rnge:' + repr(self.jump_range)
+        out += ' Crew:' + repr(self.crew_min * 2)
+        if(self.cargo > 0):
+            out =+ ' Crgo:' + repr(self.cargo)
+        if(self.passengers > 0):
+            out += ' Pass:' + repr(self.passengers) + '\n'
+        for weapon in self.weapons:
+            out += weapon.name + '\n'
+        return(out)
+
     def add_weapon(self
                    ,Weapon
                    ):
@@ -60,6 +74,27 @@ class Ship:
         self.jump_range = DesignClass.jump_range
         self.target = None
         self.transit = 0
+
+    def __str__(self):
+        out = self.name += ':'
+        out += ' Clss:' + self.design_class
+        out += ' Ownr:' + self.Owner.name
+        out += ' Rang:' + repr(self.range)
+        out += ' Lctn:' + self.Location.name
+        out += (' Dest:' + self.Destination.name
+                + '(' repr(self.transit) + ')')
+        out += ('\nHull:' + repr(self.hull_current)
+                + '/' + repr(self.hull_max))
+        out += (' Crew:' + repr(self.crew_current)
+                + '/' + repr(self.crew_min * 2))
+        if(self.cargo_max > 0):
+            out += (' Crgo:' + repr(self.cargo_current)
+                    + '/' + repr(self.cargo_max))
+        if(self.passenger_max > 0):
+            out += (' Pass:' + repr(self.passengers_current)
+                    + '/' + repr(self.passenger_max))
+        out += '\n'
+        return(out)
 
     def set_course(self
                    ,Destination
