@@ -21,24 +21,31 @@ class Weapon:
         
         """
 
-    def __init__(self, name, size, cooldown, tohit, damage, ammo):
+    def __init__(self
+                 ,name
+                 ,size
+                 ,cooldown
+                 ,to_hit
+                 ,damage
+                 ,ammo):
         self.name = name
         self.size = size
         self.cool_max = cooldown
         self.cool_current = 0
-        self.tohit = tohit
-        self.rolls, self.die, self.modifier = re.split('[dD ]'
-                                                       ,damage)
+        self.to_hit = to_hit
+        self.rolls, self.die, self.modifier = re.split('[dD ]',damage)
         self.ammo = ammo
         self.ammo_max = ammo
 
     def __str__(self):
-        out = self.name + ':'
-        out += ' sz=' + str(self.size)
-        out += ' cl=' + str(self.cool_current) + '/' + str(self.cool_max)
-        out += ' dg=' + self.rolls + 'D' + self.die + self.modifier
+        out = ''.join((self.name, ':'
+                       , ' Size=', repr(self.size)
+                       , ' ClDn=', repr(self.cool_current)
+                       , '/', repr(self.cool_max)
+                       , ' Damg=', self.rolls, 'D', self.die, self.modifier
         if(self.ammo_max > 0):
-            out += ' am=' + str(self.ammo) + '/' + str(self.ammo_max)
+            out = ''.join((out, ' Ammo=', repr(self.ammo)
+                           , '/', repr(self.ammo_max)))
         return(out)
 
     def fire(self):
@@ -46,7 +53,7 @@ class Weapon:
         if(self.cool_current > 0):
             self.cool_current -= 1
         elif(self.ammo_max == 0 or self.ammo > 0):
-            success = random.randint(1,100) - self.tohit
+            success = random.randint(1,100) - self.to_hit
             dmg = 0
             for d in range(1,self.rolls):
                 dmg += random.randint(1,self.die)
@@ -57,11 +64,11 @@ class Weapon:
             result = (success,dmg)
         return(result)
 
-    def reload(self,rounds):
+    def reload(self
+               ,rounds):
         self.ammo += rounds
         remains = self.ammo - self.ammo_max
         if(remains > 0):
             self.ammo = self.ammo_max
         return(remains)
-
 

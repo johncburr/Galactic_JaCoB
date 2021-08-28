@@ -17,10 +17,10 @@ class ShipClass:
                  ,jump_range
                  ,cargo
                  ,crew_min
-                 ,passengers
-                 ):
+                 ,passengers):
         self.name = name
         self.hull_max = hull
+        self.acceleration = acceleration
         self.jump_range = jump_range
         self.crew_min = crew_min
         self.cargo_max = cargo
@@ -28,111 +28,94 @@ class ShipClass:
         self.weapons = []
 
     def __str__(self):
-        out = self.name + ':'
-        out += ' Hull:' + repr(self.hull)
-        out += ' Accl:' + repr(self.acceleration)
-        out += ' Rnge:' + repr(self.jump_range)
-        out += ' Crew:' + repr(self.crew_min * 2)
+        out = ''.join((self.name, '-', 'Hull:', repr(self.hull)
+                      , ' Accl:', repr(self.acceleration)
+                      , ' Rnge:', repr(self.jump_range)
+                      , ' Crew:', repr(self.crew_min * 2)))
         if(self.cargo > 0):
-            out =+ ' Crgo:' + repr(self.cargo)
+            out = ''.join((out, ' Crgo:', repr(self.cargo)))
         if(self.passengers > 0):
-            out += ' Pass:' + repr(self.passengers) + '\n'
-        for weapon in self.weapons:
-            out += weapon.name + '\n'
-        return(out)
-
-    def add_weapon(self
-                   ,Weapon
-                   ):
-        self.weapons.append(Weapon)
+            out = ''.join((out, ' Pass:', repr(self.passengers)))
+        weap = '\n'.join(weapon.name for weapon in self.weapons)
+        return('\n'.join((out,name)))
 
 
 class Ship:
     """Every ship will be one of these."""
 
     def __init__(self
-                 ,DesignClass
+                 ,design_class
                  ,name
-                 ,Owner
-                 ,Location
+                 ,owner
+                 ,location
                  ):
-        self.design_class = DesignClass.name
+        self.design_class = design_class.name
         self.name = name
-        self.Owner = Owner
-        self.Location = Location
-        self.crew_max = DesignClass.crew_min * 3
-        self.crew_current = DesignClass.crew_min * 2
-        self.crew_min = DesignClass.crew_min
-        self.cargo_max = DesignClass.cargo_max
+        self.owner = owner
+        self.location = location
+        self.crew_max = design_class.crew_min * 3
+        self.crew_current = design_class.crew_min * 2
+        self.crew_min = design_class.crew_min
+        self.cargo_max = design_class.cargo_max
         self.cargo_current = 0
-        self.passenger_max = DesignClass.passenger_max
+        self.passenger_max = design_class.passenger_max
         self.passengers_current = 0
-        self.weapons.extend(DesignClass.weapons)
-        self.Destination = Location
-        self.hull_current = DesignClass.hull_max
-        self.hull_max = DesignClass.hull_max
-        self.jump_range = DesignClass.jump_range
+        self.weapons.extend(design_class.weapons)
+        self.destination = location
+        self.hull_current = design_class.hull_max
+        self.hull_max = design_class.hull_max
+        self.jump_range = design_class.jump_range
         self.target = None
         self.transit = 0
+        self.acceleration = design_class.acceleration
 
     def __str__(self):
-        out = self.name += ':'
-        out += ' Clss:' + self.design_class
-        out += ' Ownr:' + self.Owner.name
-        out += ' Rang:' + repr(self.range)
-        out += ' Lctn:' + self.Location.name
-        out += (' Dest:' + self.Destination.name
-                + '(' repr(self.transit) + ')')
-        out += ('\nHull:' + repr(self.hull_current)
-                + '/' + repr(self.hull_max))
-        out += (' Crew:' + repr(self.crew_current)
-                + '/' + repr(self.crew_min * 2))
+        out = ''.join((self.name, ':'
+                       , ' Clss=', self.design_class
+                       , ' Ownr=', self.owner.name
+                       , ' Rang=', repr(self.range)
+                       , ' Lctn=', self.location.name
+                       , ' Dest=', self.destination.name
+                       , '(', repr(self.transit), ')'
+                       , '\nHull=', repr(self.hull_current)
+                       , '/', repr(self.hull_max)
+                       , ' Crew=', repr(self.crew_current)
+                       , '/', repr(self.crew_min * 2)))
         if(self.cargo_max > 0):
-            out += (' Crgo:' + repr(self.cargo_current)
-                    + '/' + repr(self.cargo_max))
+            out = ''.join((out, ' Crgo=', repr(self.cargo_current)
+                           , '/', repr(self.cargo_max)))
         if(self.passenger_max > 0):
-            out += (' Pass:' + repr(self.passengers_current)
-                    + '/' + repr(self.passenger_max))
-        out += '\n'
-        return(out)
-
-    def set_course(self
-                   ,Destination
-                   ):
-        self.Destination = Destination
+            out = ''.join((' Pass=', repr(self.passengers_current)
+                           , '/' + repr(self.passenger_max)))
+        weap = '\n'.join((weapon.name for weapon in self.weapons))
+        return('\n'.join((out,weap)))
 
     def make_jump(self
-                  ,distance
-                  ):
-        self.Location = Hyperspace
+                  ,distance):
+        self.location = Hyperspace
         self.transit = distance
         Hyperspace.ships.append(self)
 
     def arrive(self):
-        self.Location = self.Destination
-        self.Location.add_ship(self)
+        self.location = self.destination
+        self.location.add_ship(self)
         Hyperspace.ships.remove(self)
         self.transit = 0
 
-    def set_target(self):
-        targ = random.choice()
-
     def fight(self):
-        for Weapon in self.weapons:
-            Weapon.fire(self.Target)
-
+        for weapon in self.weapons:
+            self.target.take_damage(weapon.fire())
 
     def take_damage(self
-                    ,amount
-                    ):
-        self.hull_current -= amount
+                    ,dmg):
+        if(dmg[0] + self.acceleration * 3 <= 0):
+            self.hull_current -= dmg[1]
         if self.hull_current <= 0:
-            self.Owner.ships.remove(self)
-            self.Location.ships.remove(self)
+            self.owner.ships.remove(self)
+            self.location.ships.remove(self)
 
     def repair(self
-               ,amount
-               ):
+               ,amount):
         self.hull_current += amount
         if self.hull_current > self.hull_max:
             self.hull_current = self.hull_max
