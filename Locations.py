@@ -20,7 +20,7 @@ class Location:
         self.ships = []
 
     def __str__(self):
-        return(','.join((repr(x), repr(y), repr(z))))
+        return(','.join((repr(self.x), repr(self.y), repr(self.z))))
 
     # Hyperspace = Location(-1,-1,-1)
 
@@ -62,8 +62,8 @@ class StarSystem(Location):
 
     def __repr__(self):
         me = ''.join((self.name, ': ', str(self)))
-        starlist = ','.join(stars)
-        planetlist = ','.joint(planets)
+        starlist = ','.join(self.stars)
+        planetlist = ','.joint(self.planets)
         resources = ','.join(('= '.join(('Pepl', self.people))
                               ,'= '.join(('Mnrl', self.minerals))
                               ,'= '.join(('Enrg', self.energy))))
