@@ -1,14 +1,21 @@
+import random
 
 
 class Location:
     """There are two location types: StarSystems and Hyperspace.
 
     These will have a set of coordinates in 3D space. Hyperspace will
-    need to be located outside of "map" of the game.  Beyond the
+    need to be located outside of the "map" of the game.  Beyond the
     x, y, and z, each location will also need a list of
     ships.
 
     This class is purely designed to be inherited.
+>>> Hyperspace = Location(-1000, 34, 62)
+>>> str(Hyperspace)
+'-1000,34,62'
+>>> Hyperspace.ships.append('Ship1')
+>>> for ship in Hyperspace.ships: print(str(ship))
+Ship1
     """
     def __init__(self
                  ,x
@@ -33,6 +40,18 @@ class StarSystem(Location):
         1-15 planets (Purely for flavor)
         Rates for production of various resources
 
+>>> x = []
+>>> x.append(StarSystem('BugCheese', 308, 1221, -47, 32490, 1, 98993, 3, 12, 24))
+>>> x[0].ships.append('Firefly')
+>>> x[0].planets.append('Pew Pew')
+>>> x[0].planets.append('Huzzah')
+>>> print(repr(x[0]))
+BugCheese: 308,1221,-47
+BugCheese
+Pew Pew, Huzzah
+Pepl= ..., Mnrl= 1, Enrg= 98993
+>>> for ship in x[0].ships: print(str(ship))
+Firefly
     """
     def __init__(self
                  ,name
@@ -48,7 +67,7 @@ class StarSystem(Location):
         Location.__init__(self,x,y,z)
         self.name = name
         self.people_lo = people
-        self.people_current = random.randint(people, people * 7919 * 13)
+        self.people = random.randint(people, people * 7919 * 13)
         self.people_hi = people * 7919 * 13
         self.minerals = minerals
         self.minerals_hi = minerals * 1973
@@ -57,15 +76,20 @@ class StarSystem(Location):
         self.people_rate = people_rate
         self.mineral_rate = mineral_rate
         self.energy_rate = energy_rate
-        stars = [self.name,]
-        planets = []
+        self.stars = [self.name,]
+        self.planets = []
 
     def __repr__(self):
         me = ''.join((self.name, ': ', str(self)))
-        starlist = ','.join(self.stars)
-        planetlist = ','.joint(self.planets)
-        resources = ','.join(('= '.join(('Pepl', self.people))
-                              ,'= '.join(('Mnrl', self.minerals))
-                              ,'= '.join(('Enrg', self.energy))))
+        starlist = ', '.join(self.stars)
+        planetlist = ', '.join(self.planets)
+        resources = ', '.join(('= '.join(('Pepl', str(self.people)))
+                              ,'= '.join(('Mnrl', str(self.minerals)))
+                              ,'= '.join(('Enrg', str(self.energy)))))
         return('\n'.join((me,starlist,planetlist,resources)))
 
+
+
+if(__name__ == '__main__'):
+    import doctest
+    doctest.testmod()
