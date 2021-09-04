@@ -1,4 +1,7 @@
+from Locations import *
+from random import *
 import unittest
+
 
 class TestLocations(unittest.TestCase):
     def setUp(self):
