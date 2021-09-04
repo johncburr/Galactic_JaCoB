@@ -23,13 +23,11 @@ class Weapon:
 
     def __init__(self
                  ,name
-                 ,size
                  ,cooldown
                  ,to_hit
                  ,damage
                  ,ammo):
         self.name = name
-        self.size = size
         self.cool_max = cooldown
         self.cool_current = 0
         self.to_hit = to_hit
@@ -39,7 +37,6 @@ class Weapon:
 
     def __str__(self):
         out = ''.join((self.name, ':'
-                       , ' Size=', repr(self.size)
                        , ' ClDn=', repr(self.cool_current)
                        , '/', repr(self.cool_max)
                        , ' Damg=', self.rolls, 'D', self.die, self.modifier

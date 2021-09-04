@@ -58,17 +58,17 @@ Firefly
                  ,x
                  ,y
                  ,z
-                 ,people    # The people available to play in space
-                 ,minerals  # The minerals available for space-related stuff
-                 ,energy    # The energy available for space-related stuff
+                 ,people    # Should range between 10 and 9999
+                 ,minerals  # range should fall between 50 and 9999
+                 ,energy    # somewhere between 1 and 999
                  ,people_rate
                  ,mineral_rate
                  ,energy_rate):
         Location.__init__(self,x,y,z)
         self.name = name
         self.people_lo = people
-        self.people = random.randint(people, people * 7919 * 13)
-        self.people_hi = people * 7919 * 13
+        self.people = random.randint(people, people * 7919)
+        self.people_hi = people * 7919
         self.minerals = minerals
         self.minerals_hi = minerals * 1973
         self.energy = energy
