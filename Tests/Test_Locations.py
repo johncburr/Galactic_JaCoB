@@ -1,4 +1,4 @@
-from Locations import *
+from Galactic_JaCoB.Scripts.Locations import *
 from random import *
 import unittest
 
@@ -20,5 +20,6 @@ class TestLocations(unittest.TestCase):
         del self.loc
         del self.star
 
+
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main('Galactic_JaCoB.Tests.Test_Locations', verbosity = 2)

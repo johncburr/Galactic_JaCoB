@@ -1,5 +1,6 @@
 
 
+
 class ShipClass:
     """This sets basic parameters for each type of ship.
 
@@ -17,7 +18,8 @@ class ShipClass:
                  ,jump_range
                  ,cargo
                  ,crew_min
-                 ,passengers):
+                 ,passengers
+                 ,weapons):
         self.name = name
         self.hull_max = hull
         self.acceleration = acceleration
@@ -26,6 +28,10 @@ class ShipClass:
         self.cargo_max = cargo
         self.passenger_max = passengers
         self.weapons = []
+        w = WeaponTypes
+        for weapon in weapons:
+            self.weapons.append(copy.deepcopy(
+                next(n for n in w if n.name == weapon)))
 
     def __str__(self):
         out = ''.join((self.name, '-', 'Hull:', repr(self.hull)

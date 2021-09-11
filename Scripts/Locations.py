@@ -9,7 +9,11 @@ class Location:
     x, y, and z, each location will also need a list of
     ships.
 
-    This class is purely designed to be inherited.
+    I have assembled 597018 unique names for stars.  According to my
+    calculations, I need to make a map that is 700 x 375 x 150 light
+    years.  Each location in that grid can contain 0 to 3 stars, but
+    most need to be empty and 3 stars needs to be exceedingly rare.
+
 >>> Hyperspace = Location(-1000, 34, 62)
 >>> str(Hyperspace)
 '-1000,34,62'
@@ -37,8 +41,10 @@ class StarSystem(Location):
 
     Each StarSystem will have:
         1-3 stars.  (Most will have only 1)
-        1-15 planets (Purely for flavor)
         Rates for production of various resources
+        Any number of ships
+        A maximum of one owner
+        It was a pain to come up with star names.  Not doing planets.
 
 >>> x = []
 >>> x.append(StarSystem('BugCheese', 308, 1221, -47, 32490, 1, 98993, 3, 12, 24))
@@ -48,7 +54,6 @@ class StarSystem(Location):
 >>> print(repr(x[0]))
 BugCheese: 308,1221,-47
 BugCheese
-Pew Pew, Huzzah
 Pepl= ..., Mnrl= 1, Enrg= 98993
 >>> for ship in x[0].ships: print(str(ship))
 Firefly
@@ -57,14 +62,8 @@ Firefly
                  ,name
                  ,x
                  ,y
-                 ,z
-                 ,people    # Should range between 10 and 9999
-                 ,minerals  # range should fall between 50 and 9999
-                 ,energy    # somewhere between 1 and 999
-                 ,people_rate
-                 ,mineral_rate
-                 ,energy_rate):
-        Location.__init__(self,x,y,z)
+                 ,z): # all else is random
+        Location.__init__(self, x ,y ,z)
         self.name = name
         self.people_lo = people
         self.people = random.randint(people, people * 7919)
@@ -82,7 +81,6 @@ Firefly
     def __repr__(self):
         me = ''.join((self.name, ': ', str(self)))
         starlist = ', '.join(self.stars)
-        planetlist = ', '.join(self.planets)
         resources = ', '.join(('= '.join(('Pepl', str(self.people)))
                               ,'= '.join(('Mnrl', str(self.minerals)))
                               ,'= '.join(('Enrg', str(self.energy)))))
@@ -93,3 +91,5 @@ Firefly
 if(__name__ == '__main__'):
     import doctest
     doctest.testmod()
+    import unittest
+    unittest.main('Galactic_JaCoB.Tests.Test_Locations', verbosity = 1)

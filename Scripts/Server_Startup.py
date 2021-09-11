@@ -3,76 +3,40 @@
 """
 import Locations
 import Weapons
+import Ships
 
-Map = []
-ShipClasses = []
+StarMap = []
 WeaponTypes = []
+ShipClasses = []
 Players = []
 
-starfile = open('../data/stars.dat','r')
+starfile = open('../Data/Starnames.dat','r')
 for line in starfile:
-	raw = line.split(',')
-	name = raw[0]
-	x = int(raw[1])
-	y = int(raw[2])
-	z = int(raw[3])
-	people = int(raw[4])
-	minerals = int(raw[5])
-	energy = int(raw[6])
-	people_rate = float(raw[7])
-	mineral_rate = int(raw[8])
-	energy_rate = int(raw[9])
-	star = StarSystem(name
-                          ,x
-                          ,y
-                          ,z
-                          ,people
-                          ,minerals
-                          ,energy
-                          ,people_rate
-			  ,mineral_rate
-                          ,energy_rate)
-	Map.append([x, y, z, star])
+        good = false
+        while not good:
+                x = random.randint(1,700)
+                y = random.randint(1,375)
+                z = random.randint(1,150)
+                good = somehow check to see if location with 3 stars already exists there
+        if there is already a location there:
+                add this star to the stars in the location
+        else:
+                StarMap.append(StarSystem(name, x, y, z))
 starfile.close()
 
-weapfile = open('../data/WeaponTypes.dat','r')
+weapfile = open('../Data/WeaponTypes.dat','r')
 for line in weapfile:
-    raw = line.split(',')
-    name = raw[0]
-    cooldown = int(raw[1])
-    to_hit = int(raw[2])
-    damage = raw[3]
-    ammo = int(raw[4])
-    weap = Weapon(name
-                  ,cooldown
-                  ,to_hit
-                  ,damage
-                  ,ammo)
-    WeaponTypes.append([name,weap])
+        WeaponTypes.append(map(Weapon,line.split(',')))
 weapfile.close()
 
-shipfile = open('../data/ships.dat','r')
+shipfile = open('../Data/ships.dat','r')
 for line in shipfile:
-    shipraw = line.split(',')
-    name = shipraw[0]
-    hull = int(shipraw[1])
-    acceleration = int(shipraw[2])
-    jump_range = int(shipraw[3])
-    cargo = int(shipraw[4])
-    crew_min = int(shipraw[5])
-    passengers = int(shipraw[6])
-    newShip = ShipClass(name
-                        ,hull
-                        ,acceleration
-                        ,jump_range
-                        ,cargo
-                        ,crew_min
-                        ,passengers)
-    ShipClasses.append(newShip)
+        ShipClasses.append(map(ShipClass,line.split(',')))
 shipfile.close()
 
 # Note: the following is pretty much psuedocode as I think this through
-for system in Map:
+"""
+for system in StarMap:
     Generate a random number of random ships and append to system[3].ships
 
 Generate some number of AI players and give them systems with their ships
@@ -90,3 +54,4 @@ Begin the primary game loop
     arrive ships to systems whose time in hyperspace has reached 0
     update who conrols stars
     increment resources at all stars in control of a player
+"""

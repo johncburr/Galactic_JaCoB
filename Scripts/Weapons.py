@@ -39,7 +39,7 @@ class Weapon:
         out = ''.join((self.name, ':'
                        , ' ClDn=', repr(self.cool_current)
                        , '/', repr(self.cool_max)
-                       , ' Damg=', self.rolls, 'D', self.die, self.modifier
+                       , ' Damg=', self.rolls, 'D', self.die, self.modifier))
         if(self.ammo_max > 0):
             out = ''.join((out, ' Ammo=', repr(self.ammo)
                            , '/', repr(self.ammo_max)))
